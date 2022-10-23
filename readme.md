@@ -29,11 +29,13 @@ A game is lost (for the current player) when every move leads to a winning game 
 A game is won (really, winnable) when there is at least one move leading to a lost game:
 ```agda
 lose win : Board n → Set
-lose b = ∀   m → win  (move b m) 
+lose b = ∀   m → win  (move b m)
 win  b = ∃ λ m → lose (move b m)
 ```
 Note that if `b` has no remaining stones, then there are no legal moves, so `lose b` holds vacuously.
 
 This simple mutual recursion is indeed well-founded but too subtly for Agda's termination checker.
 Since every move removes at least one stone from the board on each term, the total number of stones remaining diminishes on each step.
-We can thus persuade Agda of this well-foundedness by adding an accessibility predicate argument.
+We can thus persuade Agda of this well-foundedness by adding an accessibility predicate argument to `lose` and `win`.
+
+Next, devise some computable strategies for *deciding* (correctly computing) whether a game is lost or won. 
